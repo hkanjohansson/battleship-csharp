@@ -1,11 +1,11 @@
 ﻿namespace BattleshipApplication.Ships
 {
-    public class Submarine
+    public class Submarine : Ship
     {
         private const int SHIP_LENGTH = 3;
         private int health;
 
-        public Submarine()
+        public Submarine() : base(SHIP_LENGTH)
         {
             this.health = SHIP_LENGTH;
         }

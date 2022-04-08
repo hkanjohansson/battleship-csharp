@@ -20,10 +20,9 @@ namespace BattleshipApplication.GameboardInitilizer
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
-
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)

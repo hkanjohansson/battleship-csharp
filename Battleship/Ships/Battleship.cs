@@ -9,7 +9,6 @@
         {
             this.health = SHIP_LENGTH;
         }
-
         public int Health { get => health; set => health = value; }
     }
 }
