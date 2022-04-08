@@ -1,11 +1,11 @@
 ﻿namespace BattleshipApplication.Ships
 {
-    public class Carrier
+    public class Carrier : Ship
     {
         private const int SHIP_LENGTH = 5;
         private int health;
 
-        public Carrier()
+        public Carrier() : base(SHIP_LENGTH)
         {
             this.health = SHIP_LENGTH;
         }
