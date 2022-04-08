@@ -10,6 +10,8 @@
             this.health = SHIP_LENGTH;
         }
 
+        public static int SHIP_LENGTH1 => SHIP_LENGTH;
+
         public int Health { get => health; set => health = value; }
     }
 }

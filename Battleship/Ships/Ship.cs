@@ -3,11 +3,13 @@ namespace BattleshipApplication.Ships
 {
     public abstract class Ship
     {
-        protected int shipLength;
+        private int shipLength;
 
         public Ship(int shipLength)
         {
-            this.shipLength = shipLength;
+            this.ShipLength = shipLength;
         }
+
+        public int ShipLength { get => shipLength; set => shipLength = value; }
     }
 }

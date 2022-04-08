@@ -1,6 +1,6 @@
 ﻿namespace BattleshipApplication.Players
 {
-    public abstract class PlayerBase
+    public interface IPlayer
     {
 
     }
