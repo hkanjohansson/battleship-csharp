@@ -1,5 +1,4 @@
-﻿using BattleshipApplication.GameboardInitilizer;
-using BattleshipApplication.Ships;
+﻿using BattleshipApplication.Players;
 
 namespace BattleshipApplication.Main
 {
@@ -9,19 +8,12 @@ namespace BattleshipApplication.Main
 
         public static void Main(String[] args)
         {
-            Gameboard board = new Gameboard(10);
-            //board.PlaceShip(1, 1, 4);
-            Carrier carrier = new Carrier();
-            Cruiser cruiser = new Cruiser();
-            Battleship battleship = new Battleship();
+            PlayerBase p1 = new PlayerHuman();
             
-            Console.WriteLine(battleship.Health);
-            Console.WriteLine(cruiser.Health);
-            Console.WriteLine(carrier.Health);
+            Console.WriteLine(p1.Gameboard.ToString());
+            Console.WriteLine("Provide coordinates x, y: ");
 
-            string game = board.ToString();
-            Console.WriteLine(game);
-
+            p1.PlaceShip(9, 9, 4, true);
             Console.ReadLine();
         }
 

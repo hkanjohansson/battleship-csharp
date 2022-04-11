@@ -4,21 +4,16 @@ namespace BattleshipApplication.GameboardInitilizer
 {
     public class Gameboard
     {
+        private int boardSize;
         private int[,] board;
         public Gameboard(int boardSize)
         {    
+            this.BoardSize = boardSize;
             this.board = new int[boardSize, boardSize];
         }
 
         public int[,] Board { get => board; set => board = value; }
-
-        public void PlaceShip(int x, int y, int shipLength)
-        {   
-            for (int i = x; i < shipLength + x; i++)
-            {
-                board[y, i] = 1;
-            }
-        }
+        public int BoardSize { get => boardSize; set => boardSize = value; }
 
         public override string ToString()
         {
