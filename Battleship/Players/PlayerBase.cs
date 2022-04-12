@@ -6,17 +6,22 @@ namespace BattleshipApplication.Players
     public abstract class PlayerBase
     {
         protected Gameboard gameboard;
+        protected Gameboard fireboard;
         protected Ship[] ships;
-
-        public PlayerBase()
+        private int shipsLeft;
+        public PlayerBase(Gameboard gb, Gameboard fb)
         {
-            this.Gameboard = new Gameboard(10);
-            this.Ships = new Ship[5];
+            Gameboard = gb;
+            Fireboard = fb;
+            Ships = new Ship[5];
+            ShipsLeft = Ships.Length;
             BagOfShipsInit();
         }
 
-        public Gameboard Gameboard { get; set; }
-        public Ship[] Ships { get; set; }
+        public Ship[] Ships { get => ships; set => ships = value; }
+        public Gameboard Gameboard { get => gameboard; set => gameboard = value; }
+        public Gameboard Fireboard { get => fireboard; set => fireboard = value; }
+        public int ShipsLeft { get => shipsLeft; set => shipsLeft = value; }
 
         private void BagOfShipsInit()
         {
@@ -28,6 +33,7 @@ namespace BattleshipApplication.Players
         }
 
         public abstract void PlaceShip(int x, int y, int shipLength, bool horizontal);
+        public abstract void Fire(int x, int y);
         public abstract override string ToString();
     }
 }

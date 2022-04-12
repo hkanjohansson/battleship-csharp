@@ -5,9 +5,11 @@ namespace BattleshipApplication.Players
 {
     public class PlayerHuman : PlayerBase
     {
-        /*
-         * Each player gets two gameboards. Player1 will have access to Player2:s board and vice versa.
-         */
+
+        public PlayerHuman(Gameboard gb, Gameboard fb) : base(gb, fb)
+        {
+            Console.WriteLine("Player human is created.");
+        }
 
         public override void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
@@ -27,9 +29,14 @@ namespace BattleshipApplication.Players
             }
             else
             {
-                //Console.WriteLine("Place your ship within the gameboard.");
+                Console.WriteLine("Place your ship within the gameboard.");
                 throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public override void Fire(int x, int y)
+        {
+            throw new NotImplementedException();
         }
 
         public override string ToString()
