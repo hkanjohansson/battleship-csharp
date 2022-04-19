@@ -3,40 +3,83 @@ using BattleshipApplication.Ships;
 
 namespace BattleshipApplication.Players
 {
-    public class PlayerHuman : PlayerBase
+    public class PlayerHuman : Player
     {
-
-        public PlayerHuman(Gameboard gb, Gameboard fb) : base(gb, fb)
+        public PlayerHuman(Gameboard gb, Gameboard fb) : base()
         {
-            Console.WriteLine("Player human is created.");
+            gameboard = gb;
+            fireboard = fb;
         }
 
+        /*
+         * TODO - Try if code works, else catch exeption
+         */
         public override void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
-            if (horizontal && x + shipLength < Gameboard.BoardSize && x >= 0 && y >= 0 && y < Gameboard.BoardSize)
+            try
             {
-                for (int i = x; i < x + shipLength; i++)
+                bool validCoordinates = IsWithin(x, y, shipLength);
+
+                if (horizontal && validCoordinates)
                 {
-                    Gameboard.Board[y, x + i] = 1;
+                    for (int i = x; i < x + shipLength; i++)
+                    {
+                        if (!AlreadyPlaced(x + i, y))
+                            gameboard.Board[y, x + i] = 1;
+                    }
+                }
+                else if (!horizontal && validCoordinates)
+                {
+                    try
+                    {
+                        for (int i = y; i < y + shipLength; i++)
+                        {
+                            if (!AlreadyPlaced(x, y + i))
+                            {
+                                gameboard.Board[y + i, x] = 1;
+                            }
+                        }
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Place your ship within the gameboard and on valid coordinates.");
+                    throw new InvalidOperationException("Place your ship within the gameboard and on valid coordinates.");
                 }
             }
-            else if (!horizontal && y + shipLength < Gameboard.BoardSize && x >= 0 && y >= 0 && y < Gameboard.BoardSize)
+            catch (IndexOutOfRangeException ex)
             {
-                for (int i = y; i < y + shipLength; i++)
-                {
-                    Gameboard.Board[y + i, x] = 1;
-                }
+                Console.WriteLine(ex.Message);
             }
-            else
-            {
-                Console.WriteLine("Place your ship within the gameboard.");
-                throw new ArgumentOutOfRangeException();
-            }
+
         }
 
-        public override void Fire(int x, int y)
+        public override void Fire()
         {
-            throw new NotImplementedException();
+            bool fired = false;
+            Console.WriteLine("Provide coordinates on where to fire: ");
+            while (!fired)
+            {
+                Console.WriteLine("Provide the x-coordinate: ");
+                int x = Convert.ToInt16(Console.ReadLine());
+
+                Console.WriteLine("Provide the y-coordinate: ");
+                int y = Convert.ToInt16(Console.ReadLine());
+
+                if (x < 0 || y < 0 || x >= Gameboard.BoardSize || y >= Gameboard.BoardSize)
+                {
+                    throw new ArgumentOutOfRangeException("Provide valid coordinates.");
+                }
+                else
+                {
+                    this.fireboard.Board[y, x] = 2;
+                    fired = true;
+                }
+            }
         }
 
         public override string ToString()

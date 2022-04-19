@@ -1,5 +1,5 @@
 ﻿
-namespace BattleshipApplication.Game
+namespace BattleshipApplication.GameLogic
 {
     public interface IGameInterface
     {
