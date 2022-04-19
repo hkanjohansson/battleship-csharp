@@ -29,7 +29,7 @@ namespace BattleshipApplication.GameLogic
         public int P2Score { get => p2Score; set => p2Score = value; }
         public Player P1 { get => p1; set => p1 = value; }
         public Player P2 { get => p2; set => p2 = value; }
-        
+
 
         public void GameRunning()
         {
@@ -46,27 +46,36 @@ namespace BattleshipApplication.GameLogic
              *           - Call ShutdownGame
              *         
              */
-            int shipsLeftToPlaceP1 = P1.ShipsLeft;
-            int shipsLeftToPlaceP2 = P2.ShipsLeft;
 
-            Console.WriteLine("Value of shipsLeftToPlaceP1: " + shipsLeftToPlaceP1);
-
-            while (shipsLeftToPlaceP1 > 0)
+            /*
+             * TODO - Refactor duplicated code into a separate method. 
+             */
+            while (P1.Ships.Count > 0)
             {
-                Console.WriteLine("Provide the x-coordinate: ");
-                int x = Convert.ToInt16(Console.ReadLine());
-
-                Console.WriteLine("Provide the y-coordinate: ");
-                int y = Convert.ToInt16(Console.ReadLine());
+                Ship currentShip = P1.Ships.Dequeue();
+                int[] coordinates = P1.ProvideCoordinates();
+                int x = coordinates[0];
+                int y = coordinates[1];
 
                 Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
                 bool horizontal = Convert.ToBoolean(Console.ReadLine());
-                Ship currentShip = P1.Ships.Dequeue();
+                bool validCoordinates = P1.IsWithin(x, y, currentShip.ShipLength) && P1.PlaceAble(x, y, currentShip.ShipLength);
+
+                while (!validCoordinates)
+                {
+                    coordinates = P1.ProvideCoordinates();
+                    x = coordinates[0];
+                    y = coordinates[1];
+
+                    Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
+                    horizontal = Convert.ToBoolean(Console.ReadLine());
+                    validCoordinates = P1.IsWithin(x, y, currentShip.ShipLength) && P1.PlaceAble(x, y, currentShip.ShipLength);
+
+                }
 
                 P1.PlaceShip(x, y, currentShip.ShipLength, horizontal);
+                Console.WriteLine(P1.Gameboard.ToString());
             }
-
-            Console.WriteLine("Does it come here?");
         }
         public int PlayerTurn(int turn)
         {

@@ -11,51 +11,38 @@ namespace BattleshipApplication.Players
             fireboard = fb;
         }
 
-        /*
-         * TODO - Try if code works, else catch exeption
-         */
+        public override int[] ProvideCoordinates()
+        {
+            Console.WriteLine("Provide the x-coordinate: ");
+            int x = Convert.ToInt16(Console.ReadLine());
+
+            Console.WriteLine("Provide the y-coordinate: ");
+            int y = Convert.ToInt16(Console.ReadLine());
+            
+
+            int[] coordinates = { x, y };
+            return coordinates;
+        }
         public override void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
-            try
+            /*
+             * Checks for valid coordinates are done in the Game class. That is because a player 
+             * should only follow the rules set by the game and not itself implement them.
+             */
+            if (horizontal)
             {
-                bool validCoordinates = IsWithin(x, y, shipLength);
-
-                if (horizontal && validCoordinates)
+                for (int i = x; i < x + shipLength; i++)
                 {
-                    for (int i = x; i < x + shipLength; i++)
-                    {
-                        if (!AlreadyPlaced(x + i, y))
-                            gameboard.Board[y, x + i] = 1;
-                    }
-                }
-                else if (!horizontal && validCoordinates)
-                {
-                    try
-                    {
-                        for (int i = y; i < y + shipLength; i++)
-                        {
-                            if (!AlreadyPlaced(x, y + i))
-                            {
-                                gameboard.Board[y + i, x] = 1;
-                            }
-                        }
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Place your ship within the gameboard and on valid coordinates.");
-                    throw new InvalidOperationException("Place your ship within the gameboard and on valid coordinates.");
+                    gameboard.Board[y, i] = 1;
                 }
             }
-            catch (IndexOutOfRangeException ex)
+            else if (!horizontal)
             {
-                Console.WriteLine(ex.Message);
+                for (int i = y; i < y + shipLength; i++)
+                {
+                    gameboard.Board[i, x] = 1;
+                }
             }
-
         }
 
         public override void Fire()
@@ -76,7 +63,7 @@ namespace BattleshipApplication.Players
                 }
                 else
                 {
-                    this.fireboard.Board[y, x] = 2;
+                    fireboard.Board[y, x] = 2;
                     fired = true;
                 }
             }
@@ -86,5 +73,7 @@ namespace BattleshipApplication.Players
         {
             throw new NotImplementedException();
         }
+
+      
     }
 }
