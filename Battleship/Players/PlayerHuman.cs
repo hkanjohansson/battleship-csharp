@@ -35,6 +35,7 @@ namespace BattleshipApplication.Players
                 {
                     gameboard.Board[y, i] = 1;
                 }
+                Console.WriteLine($"Ship has been placed on ({x}-{x + shipLength - 1}, {y})");
             }
             else if (!horizontal)
             {
@@ -42,7 +43,10 @@ namespace BattleshipApplication.Players
                 {
                     gameboard.Board[i, x] = 1;
                 }
+                Console.WriteLine($"\nShip has been placed on ({x}, {y} - {y + shipLength - 1})");
             }
+
+            
         }
 
         public override void Fire()
