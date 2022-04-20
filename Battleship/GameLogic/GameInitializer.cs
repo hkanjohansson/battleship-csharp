@@ -6,7 +6,10 @@ namespace BattleshipApplication.GameLogic
     public static class GameInitializer
     {
 
-
+        public static void MainMenu()
+        {
+            throw new NotImplementedException();
+        }
         public static void ShipPlacement(Player p)
         {
             try
@@ -43,5 +46,7 @@ namespace BattleshipApplication.GameLogic
                 Console.WriteLine(ex.Message);
             }
         }
+
+
     }
 }

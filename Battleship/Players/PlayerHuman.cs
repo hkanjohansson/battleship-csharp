@@ -18,7 +18,7 @@ namespace BattleshipApplication.Players
 
             Console.WriteLine("Provide the y-coordinate: ");
             int y = Convert.ToInt16(Console.ReadLine());
-            
+
 
             int[] coordinates = { x, y };
             return coordinates;
@@ -46,20 +46,22 @@ namespace BattleshipApplication.Players
                 Console.WriteLine($"\nShip has been placed on ({x}, {y} - {y + shipLength - 1})");
             }
 
-            
+
         }
 
-        public override void Fire()
+        public override int[] Fire()
         {
+            int x = 0;
+            int y = 0;
             bool fired = false;
             Console.WriteLine("Provide coordinates on where to fire: ");
             while (!fired)
             {
                 Console.WriteLine("Provide the x-coordinate: ");
-                int x = Convert.ToInt16(Console.ReadLine());
+                x = Convert.ToInt16(Console.ReadLine());
 
                 Console.WriteLine("Provide the y-coordinate: ");
-                int y = Convert.ToInt16(Console.ReadLine());
+                y = Convert.ToInt16(Console.ReadLine());
 
                 if (x < 0 || y < 0 || x >= Gameboard.BoardSize || y >= Gameboard.BoardSize)
                 {
@@ -71,6 +73,9 @@ namespace BattleshipApplication.Players
                     fired = true;
                 }
             }
+
+            int[] coordinates = { x, y };
+            return coordinates;
         }
 
         public override string ToString()
@@ -78,6 +83,6 @@ namespace BattleshipApplication.Players
             throw new NotImplementedException();
         }
 
-      
+
     }
 }

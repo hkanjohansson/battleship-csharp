@@ -49,6 +49,8 @@ namespace BattleshipApplication.GameLogic
             GameInitializer.ShipPlacement(P1);
             GameInitializer.ShipPlacement(P2);
             Console.WriteLine("Lets get started");
+
+            GameRunner.PlayerUI(P1, P2, ShipHit());
         }
         public int PlayerTurn(int turn)
         {

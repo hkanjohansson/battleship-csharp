@@ -74,7 +74,7 @@ namespace BattleshipApplication.Players
 
             throw new InvalidOperationException("Ship is not placeable.");
         }
-        public abstract void Fire();
+        public abstract int[] Fire();
         public abstract override string ToString();
     }
 }
