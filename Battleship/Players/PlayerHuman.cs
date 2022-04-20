@@ -19,7 +19,6 @@ namespace BattleshipApplication.Players
             Console.WriteLine("Provide the y-coordinate: ");
             int y = Convert.ToInt16(Console.ReadLine());
 
-
             int[] coordinates = { x, y };
             return coordinates;
         }
@@ -45,33 +44,55 @@ namespace BattleshipApplication.Players
                 }
                 Console.WriteLine($"\nShip has been placed on ({x}, {y} - {y + shipLength - 1})");
             }
-
-
         }
 
-        public override int[] Fire()
+        public override int[] Fire(int optX = 4, int optY = 4, bool toTest = false)
         {
-            int x = 0;
-            int y = 0;
+            /*
+             * Returns coordinates where a shot has been fired. These
+             * coordinates are then used in ShipHit and UserInterface 
+             * methods.
+             */
+
+            /*
+             * TODO - Rewrite method to look like PlaceShip ---> Then it is testable.
+             *      - Move code that takes input to the GameRunner class.
+             */
+            int x = optX;
+            int y = optY;
             bool fired = false;
             Console.WriteLine("Provide coordinates on where to fire: ");
+
+            if (toTest && FireAble(x, y))
+            {
+                fireboard.Board[y, x] = 2;
+                int[] testCoordinates = { x, y };
+                return testCoordinates;
+                
+            }
             while (!fired)
             {
-                Console.WriteLine("Provide the x-coordinate: ");
-                x = Convert.ToInt16(Console.ReadLine());
-
-                Console.WriteLine("Provide the y-coordinate: ");
-                y = Convert.ToInt16(Console.ReadLine());
-
-                if (x < 0 || y < 0 || x >= Gameboard.BoardSize || y >= Gameboard.BoardSize)
+                try
                 {
-                    throw new ArgumentOutOfRangeException("Provide valid coordinates.");
-                }
-                else
-                {
-                    fireboard.Board[y, x] = 2;
-                    fired = true;
-                }
+                    Console.WriteLine("Provide the x-coordinate: ");
+                    x = Convert.ToInt16(Console.ReadLine());
+
+                    Console.WriteLine("Provide the y-coordinate: ");
+                    y = Convert.ToInt16(Console.ReadLine());
+
+                    if (x < 0 || y < 0 || x >= Gameboard.BoardSize || y >= Gameboard.BoardSize)
+                    {
+                        Console.WriteLine("Provide valid coordinates.");
+                    }
+                    else
+                    {
+                        fireboard.Board[y, x] = 2;
+                        fired = true;
+                    }
+
+                } catch {
+                    Console.WriteLine("Input must be of type: Integer.");
+                }   
             }
 
             int[] coordinates = { x, y };
@@ -82,7 +103,5 @@ namespace BattleshipApplication.Players
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

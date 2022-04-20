@@ -8,6 +8,7 @@ namespace BattleshipApplication.Main
         {
             Game game = new();
             game.GameRunning();
+            //game.P1.Fire();
            
         }
 

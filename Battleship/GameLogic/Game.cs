@@ -46,23 +46,36 @@ namespace BattleshipApplication.GameLogic
              *           - Call ShutdownGame
              *         
              */
-            GameInitializer.ShipPlacement(P1);
-            GameInitializer.ShipPlacement(P2);
+            GameInitializer.ShipPlacement(p1);
+            GameInitializer.ShipPlacement(p2);
             Console.WriteLine("Lets get started");
-
-            GameRunner.PlayerUI(P1, P2, ShipHit());
+            GameRunner.PlayerUI(p1, p2, ShipHit(), turn);
         }
         public int PlayerTurn(int turn)
         {
             return turn % 2;
         }
-
         public bool ShipHit()
         {
             /*
-             * Check whether or not a ship has been hit on the fireboard --> If hit: mark with 1 else: mark with -1
+             * Check whether or not a ship has been hit on the fireboard
              */
-            throw new NotImplementedException();
+            int playerTurn = PlayerTurn(turn);
+            int[] coordinatesFiredAt = GameRunner.PlayersFiring(p1, p2, playerTurn);
+
+            if (playerTurn == 0)
+            {
+                return p2.Gameboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] == 2;
+            }
+            else if (playerTurn == 1)
+            {
+                return p1.Gameboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] == 2;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Something has gone wrong in the PlayerTurn method.");
+            }
+            
         }
 
         public string ScoreBoard()

@@ -10,6 +10,9 @@ namespace BattleshipApplication.GameLogic
         {
             throw new NotImplementedException();
         }
+        /*
+         * TODO - Extract messages to methods?
+         */
         public static void ShipPlacement(Player p)
         {
             try
@@ -21,19 +24,30 @@ namespace BattleshipApplication.GameLogic
                     int x = coordinates[0];
                     int y = coordinates[1];
 
-                    Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
-                    bool horizontal = Convert.ToBoolean(Console.ReadLine());
+                    Console.WriteLine("Do you want to place the ship horizontally? (y for yes and n for no)");
+                    string place = Console.ReadLine();
+                    while (!place.Equals("y") && !place.Equals("n"))
+                    {
+                        Console.WriteLine("Provide a valid choice:\n\n" +
+                            "y for yes\n" +
+                            "n for no");
+                        place = Console.ReadLine();
+                    }
+                    bool horizontal = place.Equals("y") ? true : false;
                     bool validCoordinates = p.IsWithin(x, y, currentShip.ShipLength) && p.PlaceAble(x, y, currentShip.ShipLength);
 
                     while (!validCoordinates)
                     {
-                        Console.WriteLine("Try again and place your ship on valid coordinates.\n\nValid coordinates range are x: 0-9, y: 0-9 and where a ship has not already been placed.\n");
+                        Console.WriteLine("Try again and place your ship on valid coordinates." +
+                            "\n\nValid coordinates range are x: 0-9, y: 0-9 and where a ship " +
+                            "has not already been placed.\n");
                         coordinates = p.ProvideCoordinates();
                         x = coordinates[0];
                         y = coordinates[1];
 
                         Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
-                        horizontal = Convert.ToBoolean(Console.ReadLine());
+                        place = Console.ReadLine();
+                        horizontal = place.Equals("y") ? true : false;
                         validCoordinates = p.IsWithin(x, y, currentShip.ShipLength) && p.PlaceAble(x, y, currentShip.ShipLength);
 
                     }

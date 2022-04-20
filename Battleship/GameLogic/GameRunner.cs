@@ -5,13 +5,31 @@ namespace BattleshipApplication.GameLogic
 {
     public static class GameRunner
     {
+        public static int[] PlayersFiring(Player p1, Player p2, int playerTurn, int x, int y)
+        {
+            if (playerTurn == 0)
+            {
+                return p1.Fire();
+            }
+            else if (playerTurn == 1)
+            {
+                return p2.Fire();
+            }
+            else
+            {
+                throw new ArgumentException("Something has gone wrong with the PlayerTurn method.");
+            }
+        }
+
 
         public static void PlayerUI(Player pGameboard, Player pFireboard, bool shipHit, int turn)
         {
+            /*
+             * Prints a User Interface at the beginning of everyturn.
+             */
             StringBuilder sb = new();
             sb.Append("Your ships:\n\n");
             sb.Append(pGameboard.Gameboard.ToString());
-
             sb.Append("Your area to fire at:\n\n");
 
             if (turn <= 1)
@@ -20,21 +38,18 @@ namespace BattleshipApplication.GameLogic
                 {
                     for (int j = 0; j < pFireboard.Gameboard.BoardSize; j++)
                     {
-                        sb.Append(0 + ' ');
+                        sb.Append(pFireboard.Gameboard.Board[j, i] + ' ');
                     }
 
                     sb.Append('\n');
                 }
-                
             }
             else
             {
-                /*
-                 * TODO - How to keep track of coordinates??
-                 * 
+                /* 
                  * This should only care about if a ship has been hit
-                 */ 
-                if (pFireboard.Gameboard.Board[i, j] != 0)
+                 */
+                if (shipHit)
                 {
                     sb.Append("H ");
                 }
@@ -44,12 +59,9 @@ namespace BattleshipApplication.GameLogic
                 }
 
                 sb.Append('\n');
-
             }
 
-
             Console.WriteLine(sb.ToString());
-
         }
     }
 }
