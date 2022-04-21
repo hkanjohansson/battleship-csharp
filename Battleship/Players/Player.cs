@@ -77,13 +77,8 @@ namespace BattleshipApplication.Players
             throw new InvalidOperationException("Ship is not placeable.");
         }
 
-        public bool FireAble(int x, int y)
-        {
-            bool validX = x >= 0 && x < gameboard.BoardSize;
-            bool validY = y >= 0 && y < gameboard.BoardSize;
-            return validX && validY;
-        }
-        public abstract int[] Fire(int x, int y);
+
+        public abstract int[] Fire(int x, int y, bool fireAble, Gameboard fb);
         public abstract override string ToString();
     }
 }

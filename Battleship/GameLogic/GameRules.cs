@@ -5,7 +5,7 @@ namespace BattleshipApplication
 {
     public static class GameRules
     {
-        private static Gameboard gb = new(10);
+        
         /*
          *  TODO - Place methods that has to do with checking rules here. Such as:
          *         * IsWithin
@@ -13,12 +13,12 @@ namespace BattleshipApplication
          *         etc.
          */
 
-        public static bool FireInside(int x, int y)
+        public static bool FireAble(int x, int y, int boardSize, Gameboard fireBoard)
         {
-            bool validX = x >= 0 && x < gb.BoardSize;
-            bool validY = y >= 0 && y < gb.BoardSize;
-            return validX && validY;
-
+            bool validX = x >= 0 && x < boardSize;
+            bool validY = y >= 0 && y < boardSize;
+            bool alreadyFired = fireBoard.Board[y, x] != 0;
+            return validX && validY && !alreadyFired;
         }
     }
 }

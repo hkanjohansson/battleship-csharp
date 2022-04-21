@@ -49,33 +49,49 @@ namespace BattleshipApplication.GameLogic
             GameInitializer.ShipPlacement(p1);
             GameInitializer.ShipPlacement(p2);
             Console.WriteLine("Lets get started");
-            GameRunner.PlayerUI(p1, p2, ShipHit(), turn);
+
+            while (true)
+            {
+                /*
+                 * This is where the game runs:
+                 * 
+                 * TODO - 1) Check player turn
+                 *        2) FireInput
+                 *        3) Check if a ship has been hit
+                 *        4) Increase turn field
+                 */
+                int[] coordinatesFiredAt;
+                if (PlayerTurn(turn) == 0)
+                {
+                    coordinatesFiredAt = GameRunner.FireInput(p1);
+                    if (ShipHit(p1, coordinatesFiredAt[0], coordinatesFiredAt[1]))
+                    {
+                        p1Score++;
+                    }
+                } else if (PlayerTurn(turn) == 1)
+                {
+                    coordinatesFiredAt = GameRunner.FireInput(p2);
+                    if (ShipHit(p2, coordinatesFiredAt[0], coordinatesFiredAt[1]))
+                    {
+                        p2Score++;
+                    }
+                }
+
+                turn++;
+            }
+            
+            //GameRunner.PlayerUI(p1, p2, ShipHit(), turn);
         }
         public int PlayerTurn(int turn)
         {
             return turn % 2;
         }
-        public bool ShipHit()
+        public bool ShipHit(Player p, int x, int y)
         {
             /*
              * Check whether or not a ship has been hit on the fireboard
              */
-            int playerTurn = PlayerTurn(turn);
-            int[] coordinatesFiredAt = GameRunner.PlayersFiring(p1, p2, playerTurn);
-
-            if (playerTurn == 0)
-            {
-                return p2.Gameboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] == 2;
-            }
-            else if (playerTurn == 1)
-            {
-                return p1.Gameboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] == 2;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Something has gone wrong in the PlayerTurn method.");
-            }
-            
+            return p.Gameboard.Board[y, x] == 2;
         }
 
         public string ScoreBoard()

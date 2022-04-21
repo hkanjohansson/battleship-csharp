@@ -1,5 +1,4 @@
 ﻿using BattleshipApplication.GameboardInitilizer;
-using BattleshipApplication.Ships;
 
 namespace BattleshipApplication.Players
 {
@@ -46,7 +45,7 @@ namespace BattleshipApplication.Players
             }
         }
 
-        public override int[] Fire(int optX = 4, int optY = 4, bool toTest = false)
+        public override int[] Fire(int x, int y, bool fireAble, Gameboard fb)
         {
             /*
              * Returns coordinates where a shot has been fired. These
@@ -56,43 +55,16 @@ namespace BattleshipApplication.Players
 
             /*
              * TODO - Rewrite method to look like PlaceShip ---> Then it is testable.
-             *      - Move code that takes input to the GameRunner class.
              */
-            int x = optX;
-            int y = optY;
-            bool fired = false;
+
             Console.WriteLine("Provide coordinates on where to fire: ");
 
-            if (toTest && FireAble(x, y))
+            if (fireAble)
             {
                 fireboard.Board[y, x] = 2;
-                int[] testCoordinates = { x, y };
-                return testCoordinates;
-                
-            }
-            while (!fired)
+            } else
             {
-                try
-                {
-                    Console.WriteLine("Provide the x-coordinate: ");
-                    x = Convert.ToInt16(Console.ReadLine());
-
-                    Console.WriteLine("Provide the y-coordinate: ");
-                    y = Convert.ToInt16(Console.ReadLine());
-
-                    if (x < 0 || y < 0 || x >= Gameboard.BoardSize || y >= Gameboard.BoardSize)
-                    {
-                        Console.WriteLine("Provide valid coordinates.");
-                    }
-                    else
-                    {
-                        fireboard.Board[y, x] = 2;
-                        fired = true;
-                    }
-
-                } catch {
-                    Console.WriteLine("Input must be of type: Integer.");
-                }   
+                throw new InvalidOperationException("You have to fire inside the valid area (0-9, 0-9)");
             }
 
             int[] coordinates = { x, y };

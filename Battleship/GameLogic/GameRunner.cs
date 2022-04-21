@@ -5,20 +5,38 @@ namespace BattleshipApplication.GameLogic
 {
     public static class GameRunner
     {
-        public static int[] PlayersFiring(Player p1, Player p2, int playerTurn, int x, int y)
+        public static int[] FireInput(Player p)
         {
-            if (playerTurn == 0)
+            bool fired = false;
+
+            while (!fired)
             {
-                return p1.Fire();
+
+                Console.WriteLine("Provide the x-coordinate: ");
+                int x = Convert.ToInt16(Console.ReadLine());
+
+                Console.WriteLine("Provide the y-coordinate: ");
+                int y = Convert.ToInt16(Console.ReadLine());
+
+                if (!GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard))
+                {
+                    Console.WriteLine("Provide valid coordinates.");
+                }
+                else
+                {
+                    fired = true;
+                    return PlayersFiring(p, x, y);
+                }
             }
-            else if (playerTurn == 1)
-            {
-                return p2.Fire();
-            }
-            else
-            {
+
+            throw new InvalidOperationException("Something went wrong.");
+        }
+        public static int[] PlayersFiring(Player p, int x, int y)
+        {
+                bool fireAble = GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard);
+                return p.Fire(x, y, fireAble, p.Fireboard);
+        
                 throw new ArgumentException("Something has gone wrong with the PlayerTurn method.");
-            }
         }
 
 
