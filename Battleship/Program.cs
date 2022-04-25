@@ -1,4 +1,6 @@
-﻿using BattleshipApplication.GameLogic;
+﻿using BattleshipApplication.GameboardInitilizer;
+using BattleshipApplication.GameLogic;
+using BattleshipApplication.Players;
 
 namespace BattleshipApplication.Main
 {
@@ -8,8 +10,9 @@ namespace BattleshipApplication.Main
         {
             Game game = new();
             game.GameRunning();
-            //game.P1.Fire();
-           
+
+
+
         }
 
         

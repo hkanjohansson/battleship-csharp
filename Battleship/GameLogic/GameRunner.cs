@@ -40,46 +40,42 @@ namespace BattleshipApplication.GameLogic
         }
 
 
-        public static void PlayerUI(Player pGameboard, Player pFireboard, bool shipHit, int turn)
+        public static string PlayerUI(Player p)
         {
             /*
-             * Prints a User Interface at the beginning of everyturn.
+             * Prints a User Interface at the beginning of every turn.
              */
             StringBuilder sb = new();
-            sb.Append("Your ships:\n\n");
-            sb.Append(pGameboard.Gameboard.ToString());
-            sb.Append("Your area to fire at:\n\n");
-
-            if (turn <= 1)
+            for (int i = 0; i < 10; i++)
             {
-                for (int i = 0; i < pFireboard.Gameboard.BoardSize; i++)
+                sb.Append("{ ");
+                for (int j = 0; j < 10; j++)
                 {
-                    for (int j = 0; j < pFireboard.Gameboard.BoardSize; j++)
+                    sb.Append(' ' + p.Gameboard.Board[i, j].ToString() + ' ');
+                }
+                sb.Append(" || ");
+
+                for (int j = 0; j < 10; j++)
+                {
+                    /*
+                     * TODO - Integrate ShipHit
+                     */
+                    if (p.Fireboard.Board[i, j] == 4)
                     {
-                        sb.Append(pFireboard.Gameboard.Board[j, i] + ' ');
+                        sb.Append(" H ");
+                    } else if (p.Fireboard.Board[i, j] == 3)
+                    {
+                        sb.Append(" X ");
+                    } else
+                    {
+                        sb.Append(" 0 ");
                     }
-
-                    sb.Append('\n');
                 }
-            }
-            else
-            {
-                /* 
-                 * This should only care about if a ship has been hit
-                 */
-                if (shipHit)
-                {
-                    sb.Append("H ");
-                }
-                else
-                {
-                    sb.Append("M ");
-                }
-
-                sb.Append('\n');
+                
+                sb.Append("}\n");
             }
 
-            Console.WriteLine(sb.ToString());
+            return sb.ToString();
         }
     }
 }

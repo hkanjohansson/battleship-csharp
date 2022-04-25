@@ -17,7 +17,7 @@ namespace BattleshipApplication
         {
             bool validX = x >= 0 && x < boardSize;
             bool validY = y >= 0 && y < boardSize;
-            bool alreadyFired = fireBoard.Board[y, x] != 0;
+            bool alreadyFired = fireBoard.Board[y, x] == 2;
             return validX && validY && !alreadyFired;
         }
     }

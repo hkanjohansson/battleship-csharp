@@ -11,8 +11,10 @@ namespace BattleshipApplication.GameLogic
         private int p2Score;
         private Player? p1;
         private Player? p2;
-        private Gameboard gbP1;
-        private Gameboard gbP2;
+        private readonly Gameboard gbP1;
+        private readonly Gameboard gbP2;
+        private readonly Gameboard fbP1;
+        private readonly Gameboard fbP2;
         public Game()
         {
             turn = 0;
@@ -20,8 +22,10 @@ namespace BattleshipApplication.GameLogic
             p2Score = 0;
             gbP1 = new Gameboard(10);
             gbP2 = new Gameboard(10);
-            P1 = new PlayerHuman(gbP1, gbP2);
-            P2 = new PlayerHuman(gbP2, gbP1);
+            fbP1 = new Gameboard(10);
+            fbP2 = new Gameboard(10);
+            P1 = new PlayerHuman(gbP1, gbP2, fbP1);
+            P2 = new PlayerHuman(gbP2, gbP1, fbP2);
         }
 
         public int Turn { get => turn; set => turn = value; }
@@ -52,6 +56,7 @@ namespace BattleshipApplication.GameLogic
 
             while (true)
             {
+                //Player[] players = { p1, p1 };
                 /*
                  * This is where the game runs:
                  * 
@@ -59,6 +64,8 @@ namespace BattleshipApplication.GameLogic
                  *        2) FireInput
                  *        3) Check if a ship has been hit
                  *        4) Increase turn field
+                 *        
+                 *      - Refactor the following code that is repetetive.
                  */
                 int[] coordinatesFiredAt;
                 if (PlayerTurn(turn) == 0)
@@ -67,20 +74,32 @@ namespace BattleshipApplication.GameLogic
                     if (ShipHit(p1, coordinatesFiredAt[0], coordinatesFiredAt[1]))
                     {
                         p1Score++;
+                        p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
+                    } else
+                    {
+                        p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
                     }
-                } else if (PlayerTurn(turn) == 1)
+                    Console.WriteLine(GameRunner.PlayerUI(p1));
+                }
+                else if (PlayerTurn(turn) == 1)
                 {
                     coordinatesFiredAt = GameRunner.FireInput(p2);
                     if (ShipHit(p2, coordinatesFiredAt[0], coordinatesFiredAt[1]))
                     {
                         p2Score++;
+                        p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
+                    } else
+                    {
+                        p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
                     }
+
+                    Console.WriteLine(GameRunner.PlayerUI(p2));
                 }
 
                 turn++;
             }
-            
-            //GameRunner.PlayerUI(p1, p2, ShipHit(), turn);
+
+
         }
         public int PlayerTurn(int turn)
         {
@@ -91,7 +110,7 @@ namespace BattleshipApplication.GameLogic
             /*
              * Check whether or not a ship has been hit on the fireboard
              */
-            return p.Gameboard.Board[y, x] == 2;
+            return p.OppBoard.Board[y, x] == 1 && p.Fireboard.Board[y, x] == 2;
         }
 
         public string ScoreBoard()

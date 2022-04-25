@@ -4,9 +4,10 @@ namespace BattleshipApplication.Players
 {
     public class PlayerHuman : Player
     {
-        public PlayerHuman(Gameboard gb, Gameboard fb) : base()
+        public PlayerHuman(Gameboard gb, Gameboard ob, Gameboard fb) : base()
         {
             gameboard = gb;
+            oppBoard = ob;
             fireboard = fb;
         }
 

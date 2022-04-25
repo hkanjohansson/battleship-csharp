@@ -9,20 +9,24 @@ namespace BattleshipApplication.Players
     public abstract class Player
     {
         protected Gameboard gameboard;
+        protected Gameboard oppBoard;
         protected Gameboard fireboard;
         private Queue<Ship> ships;
 
         public Player()
         {
             gameboard = new Gameboard(10);
+            OppBoard = new Gameboard(10);
             fireboard = new Gameboard(10);
             ships = new();
             BagOfShipsInit();
         }
 
         public Gameboard Gameboard { get => gameboard; set => gameboard = value; }
+        public Gameboard OppBoard { get => oppBoard; set => oppBoard = value; }
         public Gameboard Fireboard { get => fireboard; set => fireboard = value; }
         public Queue<Ship> Ships { get => ships; set => ships = value; }
+        
 
         private void BagOfShipsInit()
         {

@@ -33,7 +33,8 @@ namespace BattleshipApplication.GameLogic
                             "n for no");
                         place = Console.ReadLine();
                     }
-                    bool horizontal = place.Equals("y") ? true : false;
+
+                    bool horizontal = place.Equals("y");
                     bool validCoordinates = p.IsWithin(x, y, currentShip.ShipLength) && p.PlaceAble(x, y, currentShip.ShipLength);
 
                     while (!validCoordinates)
