@@ -12,19 +12,34 @@ namespace BattleshipApplication.GameLogic
             while (!fired)
             {
 
-                Console.WriteLine("Provide the x-coordinate: ");
-                int x = Convert.ToInt16(Console.ReadLine());
+                //Console.WriteLine("Provide the x-coordinate: ");
+                string inX = Console.ReadLine();
+                //if (int.TryParse(inX, out int x))
+                //{
+                //    x = Convert.ToInt16(inX);
+                //}
 
-                Console.WriteLine("Provide the y-coordinate: ");
-                int y = Convert.ToInt16(Console.ReadLine());
 
+                //Console.WriteLine("Provide the y-coordinate: ");
+                string inY = Console.ReadLine();
+                //if (int.TryParse(inY, out int y))
+                //{
+                //    y = Convert.ToInt16(inY);
+                //}
+
+                //fired = true;
+
+                int[] coordinates = GameRules.ParseCoordinates(inX, inY);
+                int x = coordinates[0];
+                int y = coordinates[1];
                 if (!GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard))
                 {
-                    Console.WriteLine("Provide valid coordinates.");
+                    Console.WriteLine("Provide coordinates where you want to fire. The coordinates must be of integer type" +
+                    "and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
                 }
                 else
                 {
-                    fired = true;
+
                     return PlayersFiring(p, x, y);
                 }
             }
@@ -33,10 +48,8 @@ namespace BattleshipApplication.GameLogic
         }
         public static int[] PlayersFiring(Player p, int x, int y)
         {
-                bool fireAble = GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard);
-                return p.Fire(x, y, fireAble, p.Fireboard);
-        
-                throw new ArgumentException("Something has gone wrong with the PlayerTurn method.");
+            bool fireAble = GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard);
+            return p.Fire(x, y, fireAble, p.Fireboard);
         }
 
 
@@ -63,15 +76,17 @@ namespace BattleshipApplication.GameLogic
                     if (p.Fireboard.Board[i, j] == 4)
                     {
                         sb.Append(" H ");
-                    } else if (p.Fireboard.Board[i, j] == 3)
+                    }
+                    else if (p.Fireboard.Board[i, j] == 3)
                     {
                         sb.Append(" X ");
-                    } else
+                    }
+                    else
                     {
                         sb.Append(" 0 ");
                     }
                 }
-                
+
                 sb.Append("}\n");
             }
 

@@ -14,14 +14,17 @@ namespace BattleshipApplication.Players
         public override int[] ProvideCoordinates()
         {
             Console.WriteLine("Provide the x-coordinate: ");
-            int x = Convert.ToInt16(Console.ReadLine());
+            string? inX = Console.ReadLine();
 
             Console.WriteLine("Provide the y-coordinate: ");
-            int y = Convert.ToInt16(Console.ReadLine());
+            string? inY = Console.ReadLine();
+            int[] coordinatesParsed = GameRules.ParseCoordinates(inX, inY);
 
-            int[] coordinates = { x, y };
-            return coordinates;
+            return coordinatesParsed;
         }
+
+        
+
         public override void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
             /*
@@ -53,17 +56,13 @@ namespace BattleshipApplication.Players
              * coordinates are then used in ShipHit and UserInterface 
              * methods.
              */
-
-            /*
-             * TODO - Rewrite method to look like PlaceShip ---> Then it is testable.
-             */
-
             Console.WriteLine("Provide coordinates on where to fire: ");
 
             if (fireAble)
             {
                 fireboard.Board[y, x] = 2;
-            } else
+            }
+            else
             {
                 throw new InvalidOperationException("You have to fire inside the valid area (0-9, 0-9)");
             }

@@ -1,6 +1,5 @@
 ﻿using BattleshipApplication.GameboardInitilizer;
 using BattleshipApplication.Players;
-using BattleshipApplication.Ships;
 
 namespace BattleshipApplication.GameLogic
 {
@@ -50,13 +49,28 @@ namespace BattleshipApplication.GameLogic
              *           - Call ShutdownGame
              *         
              */
+
+            /*
+             * TODO - Create a Main menu that gives the player a choice to play against another human player or an AI.
+             *      - Print a summary of the rules of the game.
+             */
+
+            Console.WriteLine("Welcome to Battleships! First, place your ships within the area that is x: 0-9 and y: 0-9. " +
+                "The given coordinates must be of integer type.\n");
+
+            Console.WriteLine("Player 1 placing:\n");
             GameInitializer.ShipPlacement(p1);
+
+            Console.WriteLine("Player 2 placing:\n");
             GameInitializer.ShipPlacement(p2);
+
             Console.WriteLine("Lets get started");
 
             while (true)
             {
-                //Player[] players = { p1, p1 };
+                Console.WriteLine("Provide coordinates where you want to fire. The coordinates must be of integer type" +
+                    "and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
+
                 /*
                  * This is where the game runs:
                  * 
@@ -73,10 +87,13 @@ namespace BattleshipApplication.GameLogic
                     coordinatesFiredAt = GameRunner.FireInput(p1);
                     if (ShipHit(p1, coordinatesFiredAt[0], coordinatesFiredAt[1]))
                     {
+                        Console.WriteLine("Ship hit!");
                         p1Score++;
                         p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
-                    } else
+                    }
+                    else
                     {
+                        Console.WriteLine("Miss!");
                         p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
                     }
                     Console.WriteLine(GameRunner.PlayerUI(p1));
@@ -86,10 +103,13 @@ namespace BattleshipApplication.GameLogic
                     coordinatesFiredAt = GameRunner.FireInput(p2);
                     if (ShipHit(p2, coordinatesFiredAt[0], coordinatesFiredAt[1]))
                     {
+                        Console.WriteLine("Ship hit!");
                         p2Score++;
                         p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
-                    } else
+                    }
+                    else
                     {
+                        Console.WriteLine("Miss!");
                         p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
                     }
 
@@ -107,9 +127,6 @@ namespace BattleshipApplication.GameLogic
         }
         public bool ShipHit(Player p, int x, int y)
         {
-            /*
-             * Check whether or not a ship has been hit on the fireboard
-             */
             return p.OppBoard.Board[y, x] == 1 && p.Fireboard.Board[y, x] == 2;
         }
 
