@@ -10,9 +10,7 @@ namespace BattleshipApplication.GameLogic
         {
             throw new NotImplementedException();
         }
-        /*
-         * TODO - Extract messages to methods?
-         */
+        
         public static void ShipPlacement(Player p)
         {
             try

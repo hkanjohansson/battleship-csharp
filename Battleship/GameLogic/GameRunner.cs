@@ -11,35 +11,23 @@ namespace BattleshipApplication.GameLogic
 
             while (!fired)
             {
-
-                //Console.WriteLine("Provide the x-coordinate: ");
+                Console.WriteLine("Provide the x-coordinate:\n");
                 string inX = Console.ReadLine();
-                //if (int.TryParse(inX, out int x))
-                //{
-                //    x = Convert.ToInt16(inX);
-                //}
 
-
-                //Console.WriteLine("Provide the y-coordinate: ");
+                Console.WriteLine("Provide the y-coordinate:\n");
                 string inY = Console.ReadLine();
-                //if (int.TryParse(inY, out int y))
-                //{
-                //    y = Convert.ToInt16(inY);
-                //}
-
-                //fired = true;
+                
 
                 int[] coordinates = GameRules.ParseCoordinates(inX, inY);
                 int x = coordinates[0];
                 int y = coordinates[1];
                 if (!GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard))
                 {
-                    Console.WriteLine("Provide coordinates where you want to fire. The coordinates must be of integer type" +
+                    Console.WriteLine("Provide coordinates where you want to fire.\n\nThe coordinates must be of integer type" +
                     "and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
                 }
                 else
                 {
-
                     return PlayersFiring(p, x, y);
                 }
             }
@@ -59,19 +47,19 @@ namespace BattleshipApplication.GameLogic
              * Prints a User Interface at the beginning of every turn.
              */
             StringBuilder sb = new();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < p.Gameboard.BoardSize; i++)
             {
                 sb.Append("{ ");
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < p.Gameboard.BoardSize; j++)
                 {
                     sb.Append(' ' + p.Gameboard.Board[i, j].ToString() + ' ');
                 }
                 sb.Append(" || ");
 
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < p.Gameboard.BoardSize; j++)
                 {
                     /*
-                     * TODO - Integrate ShipHit
+                     * 3 and 4 are just values chosen to have something to compare with.
                      */
                     if (p.Fireboard.Board[i, j] == 4)
                     {
@@ -90,6 +78,7 @@ namespace BattleshipApplication.GameLogic
                 sb.Append("}\n");
             }
 
+            
             return sb.ToString();
         }
     }

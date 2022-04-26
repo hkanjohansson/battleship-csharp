@@ -12,6 +12,7 @@ namespace BattleshipApplication.Players
         protected Gameboard oppBoard;
         protected Gameboard fireboard;
         private Queue<Ship> ships;
+        private int health;
 
         public Player()
         {
@@ -20,13 +21,18 @@ namespace BattleshipApplication.Players
             fireboard = new Gameboard(10);
             ships = new();
             BagOfShipsInit();
+            health = 0;
+            
+            foreach(Ship s in ships) {
+                health += s.ShipLength;
+            }
         }
 
         public Gameboard Gameboard { get => gameboard; set => gameboard = value; }
         public Gameboard OppBoard { get => oppBoard; set => oppBoard = value; }
         public Gameboard Fireboard { get => fireboard; set => fireboard = value; }
         public Queue<Ship> Ships { get => ships; set => ships = value; }
-        
+        public int Health { get => health; set => health = value; }
 
         private void BagOfShipsInit()
         {
