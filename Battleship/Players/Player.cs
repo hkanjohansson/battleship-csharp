@@ -44,51 +44,47 @@ namespace BattleshipApplication.Players
         }
 
         public abstract int[] ProvideCoordinates();
-        public abstract void PlaceShip(int x, int y, int shipLength, bool horizontal);
-        public bool IsWithin(int x, int y, int shipLength)
+        public void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
-            bool withinHori = x + shipLength < gameboard.BoardSize && x >= 0 && y >= 0;
-            bool withinVert = y + shipLength < gameboard.BoardSize && x >= 0 && y >= 0;
-
-            if (withinHori && withinVert)
+            /*
+             * Checks for valid coordinates are done in the Game class. That is because a player 
+             * should only follow the rules set by the game and not itself implement them.
+             */
+            if (horizontal)
             {
-                return true;
+                for (int i = x; i < x + shipLength; i++)
+                {
+                    gameboard.Board[y, i] = 1;
+                }
+                Console.WriteLine($"Ship has been placed on ({x}-{x + shipLength - 1}, {y})");
+            }
+            else if (!horizontal)
+            {
+                for (int i = y; i < y + shipLength; i++)
+                {
+                    gameboard.Board[i, x] = 1;
+                }
+                Console.WriteLine($"\nShip has been placed on ({x}, {y} - {y + shipLength - 1})");
+            }
+        }
+        
+
+        public static int[] Fire(int x, int y, bool fireAble, Gameboard fb)
+        {
+            Console.WriteLine("Provide coordinates on where to fire: ");
+
+            if (fireAble)
+            {
+                fb.Board[y, x] = 2;
             }
             else
             {
-                return false;
-            }
-        }
-
-        public bool PlaceAble(int x, int y, int shipLength)
-        {
-            bool within = IsWithin(x, y, shipLength);
-            if (within)
-            {
-                for (int i = x; i < x - 1 + shipLength; i++)
-                {
-                    if (gameboard.Board[y, i] != 0)
-                    {
-                        return false;
-                    }
-                }
-
-                for (int i = y; i < y + shipLength; i++)
-                {
-                    if (gameboard.Board[i, x] != 0)
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
+                throw new InvalidOperationException("You have to fire inside the valid area (0-9, 0-9)");
             }
 
-            throw new InvalidOperationException("Ship is not placeable.");
+            int[] coordinates = { x, y };
+            return coordinates;
         }
-
-
-        public abstract int[] Fire(int x, int y, bool fireAble, Gameboard fb);
         public abstract override string ToString();
     }
 }

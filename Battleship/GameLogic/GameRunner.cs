@@ -17,7 +17,6 @@ namespace BattleshipApplication.GameLogic
                 Console.WriteLine("Provide the y-coordinate:\n");
                 string inY = Console.ReadLine();
                 
-
                 int[] coordinates = GameRules.ParseCoordinates(inX, inY);
                 int x = coordinates[0];
                 int y = coordinates[1];
@@ -34,10 +33,14 @@ namespace BattleshipApplication.GameLogic
 
             throw new InvalidOperationException("Something went wrong.");
         }
+
+        /*
+         * TODO - Either refactor the code so this method is removed, or reason why it is needed when writing the documentation. 
+         */
         public static int[] PlayersFiring(Player p, int x, int y)
         {
             bool fireAble = GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard);
-            return p.Fire(x, y, fireAble, p.Fireboard);
+            return Player.Fire(x, y, fireAble, p.Fireboard);
         }
 
 

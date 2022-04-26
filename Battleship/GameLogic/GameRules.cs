@@ -12,6 +12,7 @@ namespace BattleshipApplication
          *         * PlaceAble
          *         etc.
          */
+        static Gameboard gb = new(10);
         public static bool ParseableInput(string inX, string inY)
         {
             return int.TryParse(inX, out _) && int.TryParse(inY, out _);
@@ -54,6 +55,48 @@ namespace BattleshipApplication
             {
                 return true;
             }
+        }
+
+        public static bool IsWithin(int x, int y, int shipLength)
+        {
+            bool withinHori = x + shipLength < gb.BoardSize && x >= 0 && y >= 0;
+            bool withinVert = y + shipLength < gb.BoardSize && x >= 0 && y >= 0;
+
+            if (withinHori && withinVert)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool PlaceAble(int x, int y, int shipLength)
+        {
+            bool within = IsWithin(x, y, shipLength);
+            if (within)
+            {
+                for (int i = x; i < x - 1 + shipLength; i++)
+                {
+                    if (gb.Board[y, i] != 0)
+                    {
+                        return false;
+                    }
+                }
+
+                for (int i = y; i < y + shipLength; i++)
+                {
+                    if (gb.Board[i, x] != 0)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            throw new InvalidOperationException("Ship is not placeable.");
         }
     }
 }

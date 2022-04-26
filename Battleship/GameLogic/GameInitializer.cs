@@ -33,7 +33,7 @@ namespace BattleshipApplication.GameLogic
                     }
 
                     bool horizontal = place.Equals("y");
-                    bool validCoordinates = p.IsWithin(x, y, currentShip.ShipLength) && p.PlaceAble(x, y, currentShip.ShipLength);
+                    bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength);
 
                     while (!validCoordinates)
                     {
@@ -47,7 +47,7 @@ namespace BattleshipApplication.GameLogic
                         Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
                         place = Console.ReadLine();
                         horizontal = place.Equals("y");
-                        validCoordinates = p.IsWithin(x, y, currentShip.ShipLength) && p.PlaceAble(x, y, currentShip.ShipLength);
+                        validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength);
 
                     }
 
