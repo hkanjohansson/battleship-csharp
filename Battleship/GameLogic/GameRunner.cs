@@ -11,13 +11,7 @@ namespace BattleshipApplication.GameLogic
 
             while (!fired)
             {
-                Console.WriteLine("Provide the x-coordinate:\n");
-                string inX = Console.ReadLine();
-
-                Console.WriteLine("Provide the y-coordinate:\n");
-                string inY = Console.ReadLine();
-                
-                int[] coordinates = GameRules.ParseCoordinates(inX, inY);
+                int[] coordinates = p.ProvideCoordinates();
                 int x = coordinates[0];
                 int y = coordinates[1];
                 if (!GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard))

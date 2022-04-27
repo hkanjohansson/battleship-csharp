@@ -68,22 +68,14 @@ namespace BattleshipApplication.GameLogic
             /*
              * Keep track of game logic:
              * 
-             * Init case: Initialize the game and let both players place their ships.
+             * Init case: - Initialize the game and let both players place their ships.
              * 
              * Running case: - Call PlayerTurn to see whose turn it is to fire
              *               - Call ShipHit to see if the opponents ship has been hit
              *               - Increase the turn field
              * 
-             * End case: - If any of the players has no ships left, the game ends and a scoreboard is printed. 
-             *           - Call ShutdownGame
-             *         
+             * End case: - If any of the players has no ships left, the game ends and a scoreboard is printed.      
              */
-
-            /*
-             * TODO - Create a Main menu that gives the player a choice to play against another human player or an AI.
-             *      - Print a summary of the rules of the game in the MainMenu.
-             */
-            
 
             Console.WriteLine("Player 1 placing:\n");
             GameInitializer.ShipPlacement(p1, validOption == 3);
