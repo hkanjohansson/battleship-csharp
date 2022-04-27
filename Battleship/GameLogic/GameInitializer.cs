@@ -1,5 +1,6 @@
 ﻿using BattleshipApplication.Players;
 using BattleshipApplication.Ships;
+using System.Text;
 
 namespace BattleshipApplication.GameLogic
 {
@@ -8,11 +9,32 @@ namespace BattleshipApplication.GameLogic
 
         public static void MainMenu()
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new();
+            sb.AppendLine("|--------------------------------------------------------------------------------|");
+            sb.AppendLine("| Welcome to Battleships! First, place your ships within the area that is x: 0-9 |");
+            sb.AppendLine("| and y: 0-9. The given coordinates must be of integer type. The same goes for   |");
+            sb.AppendLine("| when it is time to fire.                                                       |");
+            sb.AppendLine("|                                                                                |");
+            sb.AppendLine("| You have three options to play the game. Provide of the following options:     |");
+            sb.AppendLine("| 1: To play against another human                                               |");
+            sb.AppendLine("| 2: To play against an AI                                                       |");
+            sb.AppendLine("| 3: Sit back and relax and let the AI:s do the playing                          |");
+            sb.AppendLine("|                                                                                |");
+            sb.AppendLine("|--------------------------------------------------------------------------------|");
+            Console.WriteLine(sb.ToString());
+            Console.WriteLine("So what will it be: ");
         }
-        
+
+
         public static void ShipPlacement(Player p)
         {
+            /*
+             * TODO - Rewrite to take an addtional argument that is a boolean asking 
+             *        for what type of player. 
+             *        
+             *      - When finished, check if the method should be splitted into 
+             *        two or more methods. 
+             */
             try
             {
                 while (p.Ships.Count > 0)
@@ -54,7 +76,8 @@ namespace BattleshipApplication.GameLogic
                     p.PlaceShip(x, y, currentShip.ShipLength, horizontal);
                     Console.WriteLine(p.Gameboard.ToString());
                 }
-            } catch (IndexOutOfRangeException ex)
+            }
+            catch (IndexOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
             }

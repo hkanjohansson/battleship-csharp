@@ -9,13 +9,16 @@ namespace BattleshipApplication.GameLogic
         private int turn;
         private int p1Score;
         private int p2Score;
-        private Player? p1;
-        private Player? p2;
         private readonly Gameboard gbP1;
         private readonly Gameboard gbP2;
         private readonly Gameboard fbP1;
         private readonly Gameboard fbP2;
+        private string options;
+        private int validOption;
+        private Player? p1;
+        private Player? p2;
         private bool gameRunning;
+
         public Game()
         {
             turn = 0;
@@ -25,8 +28,31 @@ namespace BattleshipApplication.GameLogic
             gbP2 = new Gameboard(10);
             fbP1 = new Gameboard(10);
             fbP2 = new Gameboard(10);
-            P1 = new PlayerHuman(gbP1, gbP2, fbP1);
-            P2 = new PlayerHuman(gbP2, gbP1, fbP2);
+
+            GameInitializer.MainMenu();
+            options = Console.ReadLine();
+            while (!int.TryParse(options, out validOption))
+            {
+                Console.WriteLine("Please provide a valid option");
+                options = Console.ReadLine();
+            }
+
+            if (validOption == 1)
+            {
+                P1 = new PlayerHuman(gbP1, gbP2, fbP1);
+                P2 = new PlayerHuman(gbP2, gbP1, fbP2);
+            }
+            else if (validOption == 2)
+            {
+                P1 = new PlayerHuman(gbP1, gbP2, fbP1);
+                P2 = new PlayerAI(gbP2, gbP1, fbP2);
+            }
+            else if (validOption == 3)
+            {
+                P1 = new PlayerAI(gbP1, gbP2, fbP1);
+                P2 = new PlayerAI(gbP2, gbP1, fbP2);
+            }
+
             gameRunning = true;
         }
 
@@ -57,10 +83,6 @@ namespace BattleshipApplication.GameLogic
              * TODO - Create a Main menu that gives the player a choice to play against another human player or an AI.
              *      - Print a summary of the rules of the game in the MainMenu.
              */
-
-
-            Console.WriteLine("Welcome to Battleships! First, place your ships within the area that is x: 0-9 and y: 0-9. " +
-                "The given coordinates must be of integer type.\n");
 
             Console.WriteLine("Player 1 placing:\n");
             GameInitializer.ShipPlacement(p1);
