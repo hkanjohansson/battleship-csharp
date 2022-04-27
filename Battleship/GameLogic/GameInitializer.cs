@@ -26,56 +26,90 @@ namespace BattleshipApplication.GameLogic
         }
 
 
-        public static void ShipPlacement(Player p)
+        public static void ShipPlacement(Player p, bool ai)
         {
             /*
              * TODO - Rewrite to take an addtional argument that is a boolean asking 
              *        for what type of player. 
              *        
+             *      
              *      - When finished, check if the method should be splitted into 
-             *        two or more methods. 
+             *        two or more methods e.g. refactor duplicated code.
+             *        
+             *      
              */
+
+            Random random = new();
             try
             {
                 while (p.Ships.Count > 0)
                 {
                     Ship currentShip = p.Ships.Dequeue();
-                    int[] coordinates = p.ProvideCoordinates();
-                    int x = coordinates[0];
-                    int y = coordinates[1];
+                    
 
-                    Console.WriteLine("Do you want to place the ship horizontally? (y for yes and n for no)");
-                    string place = Console.ReadLine();
-                    while (!place.Equals("y") && !place.Equals("n"))
+                    if (ai)
                     {
-                        Console.WriteLine("Provide a valid choice:\n\n" +
-                            "y for yes\n" +
-                            "n for no");
-                        place = Console.ReadLine();
+                        int[] coordinates = p.ProvideCoordinates();
+                        int x = coordinates[0];
+                        int y = coordinates[1];
+                        
+                        bool horizontal = random.Next(0, 2) == 0; // 0 is horizontal and 1 is vertical
+                        
+                        bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+                        while (!validCoordinates)
+                        {
+                            coordinates = p.ProvideCoordinates();
+                            x = coordinates[0];
+                            y = coordinates[1];
+
+                            horizontal = random.Next(0, 2) == 0; // 0 is horizontal and 1 is vertical
+                            validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+                        }
+
+                        p.PlaceShip(x, y, currentShip.ShipLength, horizontal);
+                        Console.WriteLine(p.Gameboard.ToString());
+                    }
+                    else
+                    {
+                        int[] coordinates = p.ProvideCoordinates();
+                        int x = coordinates[0];
+                        int y = coordinates[1];
+                        Console.WriteLine("Do you want to place the ship horizontally? (y for yes and n for no)");
+                        string place = Console.ReadLine();
+                        while (!place.Equals("y") && !place.Equals("n"))
+                        {
+                            Console.WriteLine("Provide a valid choice:\n\n" +
+                                "y for yes\n" +
+                                "n for no");
+                            place = Console.ReadLine();
+                        }
+
+                        bool horizontal = place.Equals("y");
+                        bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+
+                        while (!validCoordinates)
+                        {
+                            Console.WriteLine("Try again and place your ship on valid coordinates." +
+                                "\n\nValid coordinates range are x: 0-9, y: 0-9 and where a ship " +
+                                "has not already been placed.\n");
+                            coordinates = p.ProvideCoordinates();
+                            x = coordinates[0];
+                            y = coordinates[1];
+
+                            Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
+                            place = Console.ReadLine();
+                            horizontal = place.Equals("y");
+                            validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+
+                        }
+
+                        p.PlaceShip(x, y, currentShip.ShipLength, horizontal);
+                        Console.WriteLine(p.Gameboard.ToString());
                     }
 
-                    bool horizontal = place.Equals("y");
-                    bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength);
-
-                    while (!validCoordinates)
-                    {
-                        Console.WriteLine("Try again and place your ship on valid coordinates." +
-                            "\n\nValid coordinates range are x: 0-9, y: 0-9 and where a ship " +
-                            "has not already been placed.\n");
-                        coordinates = p.ProvideCoordinates();
-                        x = coordinates[0];
-                        y = coordinates[1];
-
-                        Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
-                        place = Console.ReadLine();
-                        horizontal = place.Equals("y");
-                        validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength);
-
-                    }
-
-                    p.PlaceShip(x, y, currentShip.ShipLength, horizontal);
-                    Console.WriteLine(p.Gameboard.ToString());
+                    
                 }
+
             }
             catch (IndexOutOfRangeException ex)
             {

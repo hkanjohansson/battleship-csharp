@@ -83,19 +83,20 @@ namespace BattleshipApplication.GameLogic
              * TODO - Create a Main menu that gives the player a choice to play against another human player or an AI.
              *      - Print a summary of the rules of the game in the MainMenu.
              */
+            
 
             Console.WriteLine("Player 1 placing:\n");
-            GameInitializer.ShipPlacement(p1);
+            GameInitializer.ShipPlacement(p1, validOption == 3);
 
             Console.WriteLine("Player 2 placing:\n");
-            GameInitializer.ShipPlacement(p2);
+            GameInitializer.ShipPlacement(p2, validOption == 2 ||  validOption == 3);
 
-            Console.WriteLine("Lets get started");
+            Console.WriteLine("Lets get started!");
 
             while (gameRunning)
             {
                 Console.WriteLine("Provide coordinates where you want to fire.\n\nThe coordinates must be of integer type" +
-                    "and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
+                    " and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
 
                 /*
                  * This is where the game runs:
@@ -148,9 +149,8 @@ namespace BattleshipApplication.GameLogic
                     ShutdownGame();
                 }
             }
-
-
         }
+
         public int PlayerTurn(int turn)
         {
             return turn % 2;
