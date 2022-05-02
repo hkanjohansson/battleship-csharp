@@ -11,5 +11,10 @@
         }
         
         public int Health { get => health; set => health = value; }
+
+        public override string Name()
+        {
+            return "Battleship";
+        }
     }
 }

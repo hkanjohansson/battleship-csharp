@@ -3,9 +3,6 @@ using BattleshipApplication.Ships;
 
 namespace BattleshipApplication.Players
 {
-    /*
-     * TODO - Move methods that has to do with rules to GameLogic.GameRules
-     */
     public abstract class Player
     {
         protected Gameboard gameboard;
@@ -13,6 +10,7 @@ namespace BattleshipApplication.Players
         protected Gameboard fireboard;
         private Queue<Ship> ships;
         private int health;
+        private int score;
 
         public Player()
         {
@@ -26,6 +24,8 @@ namespace BattleshipApplication.Players
             foreach(Ship s in ships) {
                 health += s.ShipLength;
             }
+
+            score = 0;
         }
 
         public Gameboard Gameboard { get => gameboard; set => gameboard = value; }
@@ -33,6 +33,7 @@ namespace BattleshipApplication.Players
         public Gameboard Fireboard { get => fireboard; set => fireboard = value; }
         public Queue<Ship> Ships { get => ships; set => ships = value; }
         public int Health { get => health; set => health = value; }
+        public int Score { get => score; set => score = value; }
 
         private void BagOfShipsInit()
         {
@@ -85,6 +86,6 @@ namespace BattleshipApplication.Players
             int[] coordinates = { x, y };
             return coordinates;
         }
-        public abstract override string ToString();
+        public abstract string ToString();
     }
 }

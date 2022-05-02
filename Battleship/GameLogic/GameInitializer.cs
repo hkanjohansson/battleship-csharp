@@ -26,24 +26,15 @@ namespace BattleshipApplication.GameLogic
 
         public static void ShipPlacement(Player p, bool ai)
         {
-            /*
-             * TODO - Rewrite to take an addtional argument that is a boolean asking 
-             *        for what type of player. 
-             *        
-             *      
-             *      - When finished, check if the method should be splitted into 
-             *        two or more methods e.g. refactor duplicated code.
-             *        
-             *      
-             */
-
             Random random = new();
             try
             {
                 while (p.Ships.Count > 0)
                 {
                     Ship currentShip = p.Ships.Dequeue();
-                    
+                    Console.WriteLine("You are placing a: " + currentShip.Name() + 
+                        ", which has a shiplength of: " 
+                        + currentShip.ShipLength);
                     if (ai)
                     {
                         ShipPlacementAI(p, random, currentShip);
@@ -76,7 +67,9 @@ namespace BattleshipApplication.GameLogic
             }
 
             bool horizontal = place.Equals("y");
-            bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+            bool validCoordinates = 
+                GameRules.IsWithin(x, y, currentShip.ShipLength) && 
+                GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
 
             while (!validCoordinates)
             {
@@ -90,7 +83,9 @@ namespace BattleshipApplication.GameLogic
                 Console.WriteLine("Do you want to place the ship horizontally? (write true for horizontal and false for vertical)");
                 place = Console.ReadLine();
                 horizontal = place.Equals("y");
-                validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+                validCoordinates = 
+                    GameRules.IsWithin(x, y, currentShip.ShipLength) && 
+                    GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
 
             }
 
@@ -106,7 +101,10 @@ namespace BattleshipApplication.GameLogic
 
             bool horizontal = random.Next(0, 2) == 0; // 0 is horizontal and 1 is vertical
 
-            bool validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+            bool validCoordinates = 
+                GameRules.IsWithin(x, y, currentShip.ShipLength) && 
+                GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+            
             while (!validCoordinates)
             {
                 coordinates = p.ProvideCoordinates();
@@ -114,7 +112,9 @@ namespace BattleshipApplication.GameLogic
                 y = coordinates[1];
 
                 horizontal = random.Next(0, 2) == 0; // 0 is horizontal and 1 is vertical
-                validCoordinates = GameRules.IsWithin(x, y, currentShip.ShipLength) && GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
+                validCoordinates = 
+                    GameRules.IsWithin(x, y, currentShip.ShipLength) && 
+                    GameRules.PlaceAble(x, y, currentShip.ShipLength, horizontal);
             }
 
             p.PlaceShip(x, y, currentShip.ShipLength, horizontal);

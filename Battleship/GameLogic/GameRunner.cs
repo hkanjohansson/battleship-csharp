@@ -5,6 +5,24 @@ namespace BattleshipApplication.GameLogic
 {
     public static class GameRunner
     {
+        public static void GameMechanics(Player p, int x, int y, bool shipHit)
+        {
+            if (shipHit)
+            {
+                Console.WriteLine("Ship hit!");
+                p.Score++;
+                p.Fireboard.Board[y, x] = 4;
+            }
+            else
+            {
+                Console.WriteLine("Miss!");
+                p.Fireboard.Board[y, x] = 3;
+            }
+            Console.WriteLine(PlayerUI(p));
+        }
+
+
+
         public static int[] FireInput(Player p)
         {
             bool fired = false;
@@ -35,6 +53,15 @@ namespace BattleshipApplication.GameLogic
         {
             bool fireAble = GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard);
             return Player.Fire(x, y, fireAble, p.Fireboard);
+        }
+
+        public static int PlayerTurn(int turn)
+        {
+            return turn % 2;
+        }
+        public static bool ShipHit(Player p, int x, int y)
+        {
+            return p.OppBoard.Board[y, x] == 1 && p.Fireboard.Board[y, x] == 2;
         }
 
 
@@ -75,7 +102,6 @@ namespace BattleshipApplication.GameLogic
                 sb.Append("}\n");
             }
 
-            
             return sb.ToString();
         }
     }

@@ -7,8 +7,6 @@ namespace BattleshipApplication.GameLogic
     public class Game : IGameInterface
     {
         private int turn;
-        private int p1Score;
-        private int p2Score;
         private readonly Gameboard gbP1;
         private readonly Gameboard gbP2;
         private readonly Gameboard fbP1;
@@ -22,8 +20,6 @@ namespace BattleshipApplication.GameLogic
         public Game()
         {
             turn = 0;
-            p1Score = 0;
-            p2Score = 0;
             gbP1 = new Gameboard(10);
             gbP2 = new Gameboard(10);
             fbP1 = new Gameboard(10);
@@ -39,26 +35,25 @@ namespace BattleshipApplication.GameLogic
 
             if (validOption == 1)
             {
-                P1 = new PlayerHuman(gbP1, gbP2, fbP1);
-                P2 = new PlayerHuman(gbP2, gbP1, fbP2);
+                p1 = new PlayerHuman(gbP1, gbP2, fbP1);
+                p2 = new PlayerHuman(gbP2, gbP1, fbP2);
             }
             else if (validOption == 2)
             {
-                P1 = new PlayerHuman(gbP1, gbP2, fbP1);
-                P2 = new PlayerAI(gbP2, gbP1, fbP2);
+                p1 = new PlayerHuman(gbP1, gbP2, fbP1);
+                p2 = new PlayerAI(gbP2, gbP1, fbP2);
             }
             else if (validOption == 3)
             {
-                P1 = new PlayerAI(gbP1, gbP2, fbP1);
-                P2 = new PlayerAI(gbP2, gbP1, fbP2);
+                p1 = new PlayerAI(gbP1, gbP2, fbP1);
+                p2 = new PlayerAI(gbP2, gbP1, fbP2);
+
             }
 
             gameRunning = true;
         }
 
         public int Turn { get => turn; set => turn = value; }
-        public int P1Score { get => p1Score; set => p1Score = value; }
-        public int P2Score { get => p2Score; set => p2Score = value; }
         public Player? P1 { get => p1; set => p1 = value; }
         public Player? P2 { get => p2; set => p2 = value; }
 
@@ -81,7 +76,7 @@ namespace BattleshipApplication.GameLogic
             GameInitializer.ShipPlacement(p1, validOption == 3);
 
             Console.WriteLine("Player 2 placing:\n");
-            GameInitializer.ShipPlacement(p2, validOption == 2 ||  validOption == 3);
+            GameInitializer.ShipPlacement(p2, validOption == 2 || validOption == 3);
 
             Console.WriteLine("Lets get started!");
 
@@ -95,45 +90,40 @@ namespace BattleshipApplication.GameLogic
                  * 
                  * TODO - Refactor the following code that is repetetive.
                  */
-                int[] coordinatesFiredAt;
-                Console.WriteLine($"Player {PlayerTurn(turn) + 1}:s turn to fire:\n");
-                if (PlayerTurn(turn) == 0)
+                int playerToFire = GameRunner.PlayerTurn(turn);
+                if (playerToFire == 0)
                 {
+                    Console.WriteLine($"Player {playerToFire + 1}:s turn to fire:\n");
+                    int[] coordinatesFiredAt;
                     coordinatesFiredAt = GameRunner.FireInput(p1);
-                    if (ShipHit(p1, coordinatesFiredAt[0], coordinatesFiredAt[1]))
-                    {
-                        Console.WriteLine("Ship hit!");
-                        p2.Health--;
-                        p1Score++;
-                        p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Miss!");
-                        p1.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
-                    }
-                    Console.WriteLine(GameRunner.PlayerUI(p1));
+
+                    bool oppShipHit = GameRules.OpponentShipHit(p1, coordinatesFiredAt);
+
+                    GameRunner.
+                        GameMechanics(
+                        p1,
+                        coordinatesFiredAt[0],
+                        coordinatesFiredAt[1],
+                        oppShipHit);
+                    p2.Health--;
                 }
-                else if (PlayerTurn(turn) == 1)
+                else if (GameRunner.PlayerTurn(turn) == 1)
                 {
+                    Console.WriteLine($"Player {GameRunner.PlayerTurn(turn) + 1}:s turn to fire:\n");
+                    int[] coordinatesFiredAt;
                     coordinatesFiredAt = GameRunner.FireInput(p2);
-                    if (ShipHit(p2, coordinatesFiredAt[0], coordinatesFiredAt[1]))
-                    {
-                        Console.WriteLine("Ship hit!");
-                        p1.Health--;
-                        p2Score++;
-                        p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 4;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Miss!");
-                        p2.Fireboard.Board[coordinatesFiredAt[1], coordinatesFiredAt[0]] = 3;
-                    }
-
-                    Console.WriteLine(GameRunner.PlayerUI(p2));
+                    
+                    GameRunner.
+                        GameMechanics(
+                        p2,
+                        coordinatesFiredAt[0],
+                        coordinatesFiredAt[1],
+                        GameRunner.ShipHit(p2,
+                        coordinatesFiredAt[0],
+                        coordinatesFiredAt[1]));
+                    p1.Health--;
                 }
 
-                Console.WriteLine(ScoreBoard());
                 turn++;
 
                 if (p1.Health <= 0 || p2.Health <= 0)
@@ -143,27 +133,18 @@ namespace BattleshipApplication.GameLogic
             }
         }
 
-        public int PlayerTurn(int turn)
-        {
-            return turn % 2;
-        }
-        public bool ShipHit(Player p, int x, int y)
-        {
-            return p.OppBoard.Board[y, x] == 1 && p.Fireboard.Board[y, x] == 2;
-        }
-
         public string ScoreBoard()
         {
             StringBuilder sb = new();
-            sb.AppendLine("Player 1: " + p1Score + " points");
-            sb.AppendLine("Player 2: " + p2Score + " points");
+            sb.AppendLine("Player 1: " + p1.Score + " points");
+            sb.AppendLine("Player 2: " + p2.Score + " points");
             return sb.ToString();
         }
 
         public void ShutdownGame()
         {
             /*
-             * If any of the player has no ships left or one of the player wants to quit --> end the game and print a last scoreboard.
+             * If any of the player has no ships left: - End the game and print a last scoreboard.
              */
             gameRunning = false;
             Console.WriteLine("The game has come to an end. This is the final score:\n" + ScoreBoard());

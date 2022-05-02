@@ -11,8 +11,6 @@ namespace BattleshipApplication.Main
             Game game = new();
             game.GameRunning();
 
-
-
         }
 
         

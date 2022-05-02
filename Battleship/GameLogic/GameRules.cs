@@ -1,4 +1,6 @@
 ﻿using BattleshipApplication.GameboardInitilizer;
+using BattleshipApplication.GameLogic;
+using BattleshipApplication.Players;
 
 namespace BattleshipApplication
 
@@ -96,6 +98,13 @@ namespace BattleshipApplication
             }
 
             throw new InvalidOperationException("Ship is not placeable.");
+        }
+
+        public static bool OpponentShipHit(Player p, int[] coordinatesFiredAt)
+        {
+            return GameRunner.ShipHit(p,
+                                    coordinatesFiredAt[0],
+                                    coordinatesFiredAt[1]);
         }
     }
 }

@@ -11,5 +11,9 @@
         }
         public static int SHIP_LENGTH1 => SHIP_LENGTH;
         public int Health { get => health; set => health = value; }
+        public override string Name()
+        {
+            return "Cruiser";
+        }
     }
 }
