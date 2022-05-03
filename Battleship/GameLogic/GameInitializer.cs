@@ -15,7 +15,7 @@ namespace BattleshipApplication.GameLogic
             sb.AppendLine("| coordinates must be of integer type. The same goes for when it is time to fire.|");
             sb.AppendLine("|                                                                                |");
             sb.AppendLine("|                                                                                |");
-            sb.AppendLine("| You have three options to play the game. Provide of the following options:     |");
+            sb.AppendLine("| You have three options to play the game. Provide one of the following options: |");
             sb.AppendLine("| 1: To play against another human                                               |");
             sb.AppendLine("| 2: To play against an AI                                                       |");
             sb.AppendLine("| 3: Sit back, relax and let the AI:s do the playing                             |");

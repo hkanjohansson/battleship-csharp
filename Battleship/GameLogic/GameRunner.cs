@@ -5,6 +5,9 @@ namespace BattleshipApplication.GameLogic
 {
     public static class GameRunner
     {
+        /*
+         * TODO - Rename this  method into something more relevant.
+         */
         public static void GameMechanics(Player p, int x, int y, bool shipHit)
         {
             if (shipHit)
@@ -21,8 +24,6 @@ namespace BattleshipApplication.GameLogic
             Console.WriteLine(PlayerUI(p));
         }
 
-
-
         public static int[] FireInput(Player p)
         {
             bool fired = false;
@@ -33,6 +34,7 @@ namespace BattleshipApplication.GameLogic
                 int x = coordinates[0];
                 int y = coordinates[1];
                 if (!GameRules.FireAble(x, y, p.Fireboard.BoardSize, p.Fireboard))
+
                 {
                     Console.WriteLine("Provide coordinates where you want to fire.\n\nThe coordinates must be of integer type" +
                     "and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");

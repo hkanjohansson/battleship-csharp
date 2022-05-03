@@ -102,6 +102,7 @@ namespace BattleshipApplication
 
         public static bool OpponentShipHit(Player p, int[] coordinatesFiredAt)
         {
+
             return GameRunner.ShipHit(p,
                                     coordinatesFiredAt[0],
                                     coordinatesFiredAt[1]);

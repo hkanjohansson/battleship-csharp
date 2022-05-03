@@ -11,12 +11,15 @@ namespace BattleshipApplication.GameLogic
         private readonly Gameboard gbP2;
         private readonly Gameboard fbP1;
         private readonly Gameboard fbP2;
-        private string options;
-        private int validOption;
+        private readonly string options;
+        private readonly int validOption;
         private Player? p1;
         private Player? p2;
         private bool gameRunning;
 
+        /*
+         * TODO - Refactor the constructor?
+         */
         public Game()
         {
             turn = 0;
@@ -86,7 +89,6 @@ namespace BattleshipApplication.GameLogic
                     " and x: 0-9, y: 0-9. Also you can't fire at the same spot more than once.");
 
                 /*
-                 * This is where the game runs:
                  * 
                  * TODO - Refactor the following code that is repetetive.
                  */
@@ -98,21 +100,32 @@ namespace BattleshipApplication.GameLogic
                     coordinatesFiredAt = GameRunner.FireInput(p1);
 
                     bool oppShipHit = GameRules.OpponentShipHit(p1, coordinatesFiredAt);
-
                     GameRunner.
                         GameMechanics(
                         p1,
                         coordinatesFiredAt[0],
                         coordinatesFiredAt[1],
                         oppShipHit);
-                    p2.Health--;
+
+                    if (oppShipHit)
+                    {
+                        GameHitMechanics(p1, p2, coordinatesFiredAt, oppShipHit);
+                    }
+                    //else if (!oppShipHit && validOption == 3)
+                    //{
+                    //    AIMissMechanics(p1, coordinatesFiredAt, oppShipHit);
+                    //}
                 }
                 else if (GameRunner.PlayerTurn(turn) == 1)
                 {
                     Console.WriteLine($"Player {GameRunner.PlayerTurn(turn) + 1}:s turn to fire:\n");
+
                     int[] coordinatesFiredAt;
                     coordinatesFiredAt = GameRunner.FireInput(p2);
-                    
+                    bool oppShipHit = GameRules.OpponentShipHit(p2, coordinatesFiredAt);
+                    /*
+                     * TODO - Rename GameMechanics into something more descriptive.
+                     */
                     GameRunner.
                         GameMechanics(
                         p2,
@@ -121,7 +134,16 @@ namespace BattleshipApplication.GameLogic
                         GameRunner.ShipHit(p2,
                         coordinatesFiredAt[0],
                         coordinatesFiredAt[1]));
-                    p1.Health--;
+
+                    if (oppShipHit)
+                    {
+                        GameHitMechanics(p2, p1, coordinatesFiredAt, oppShipHit);
+                    }
+                    //else if (!oppShipHit && validOption == 2 || validOption == 3)
+                    //{
+                    //    AIMissMechanics(p2, coordinatesFiredAt, oppShipHit);
+                    //}
+
                 }
 
                 turn++;
@@ -130,6 +152,33 @@ namespace BattleshipApplication.GameLogic
                 {
                     ShutdownGame();
                 }
+            }
+        }
+
+        private static void GameHitMechanics(Player player, Player oppPlayer, int[] coordinatesFiredAt, bool oppShipHit)
+        {
+            if (oppShipHit)
+            {
+                oppPlayer.Health--;
+                player.NHits++;
+                player.HitsCoordinates.Add(coordinatesFiredAt);
+            }
+
+        }
+
+        public static void AIMissMechanics(Player player, int[] coordinatesFiredAt, bool oppShipHit)
+        {
+            if (!oppShipHit && player.NHits >= 2)
+            {
+                player.MissesAfterSecondHit++;
+                player.MissAfterHitCoordinates.Add(coordinatesFiredAt);
+            }
+            if (player.NHits >= 2 && !oppShipHit && player.MissesAfterSecondHit >= 2)
+            {
+                player.NHits = 0;
+                player.MissesAfterSecondHit = 0;
+                player.HitsCoordinates.Clear();
+                player.MissAfterHitCoordinates.Clear();
             }
         }
 

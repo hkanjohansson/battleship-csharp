@@ -9,8 +9,12 @@ namespace BattleshipApplication.Players
         protected Gameboard oppBoard;
         protected Gameboard fireboard;
         private Queue<Ship> ships;
-        private int health;
+        protected int health;
+        protected int nHits;
         private int score;
+        protected int missesAfterSecondHit;
+        protected List<int[]> hitsCoordinates;
+        protected List<int[]> missAfterHitCoordinates;
 
         public Player()
         {
@@ -19,14 +23,15 @@ namespace BattleshipApplication.Players
             fireboard = new Gameboard(10);
             ships = new();
             BagOfShipsInit();
-            health = 0;
+            HealthInit();
             
-            foreach(Ship s in ships) {
-                health += s.ShipLength;
-            }
-
+            missesAfterSecondHit = 0;
+            hitsCoordinates = new List<int[]>();
+            missAfterHitCoordinates = new List<int[]>();
             score = 0;
         }
+
+        
 
         public Gameboard Gameboard { get => gameboard; set => gameboard = value; }
         public Gameboard OppBoard { get => oppBoard; set => oppBoard = value; }
@@ -34,7 +39,14 @@ namespace BattleshipApplication.Players
         public Queue<Ship> Ships { get => ships; set => ships = value; }
         public int Health { get => health; set => health = value; }
         public int Score { get => score; set => score = value; }
-
+        public int NHits { get => nHits; set => nHits = value; }
+        public int MissesAfterSecondHit { get => missesAfterSecondHit; set => missesAfterSecondHit = value; }
+        public List<int[]> HitsCoordinates { get => hitsCoordinates; set => hitsCoordinates = value; }
+        public List<int[]> MissAfterHitCoordinates { get => missAfterHitCoordinates; set => missAfterHitCoordinates = value; }
+        
+        /*
+         * TODO - Refactor methods that has to do with initialization into another class
+         */
         private void BagOfShipsInit()
         {
             Ships.Enqueue(new Battleship());
@@ -44,6 +56,14 @@ namespace BattleshipApplication.Players
             Ships.Enqueue(new Submarine());
         }
 
+        private void HealthInit()
+        {
+            health = 0;
+            foreach (Ship s in ships)
+            {
+                health += s.ShipLength;
+            }
+        }
         public abstract int[] ProvideCoordinates();
         public void PlaceShip(int x, int y, int shipLength, bool horizontal)
         {
